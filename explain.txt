@@ -1,0 +1,75 @@
+Application Architecture & Flow
+
+Overview
+The Expense Tracker is a full-stack web application that enables users to manage their personal finances. 
+It allows users to register and log in, then add, edit, or delete expenses. 
+Users can visualize their spending habits through interactive charts, offering a better understanding of how their money is spent over time.
+The project is built using a MERN-like stack (MongoDB, Express.js, React, Node.js), with a focus on modular code structure and real-world usability.
+
+1. Project Architecture (Layered Breakdown)
+client/         → Frontend (React + Vite)
+server/         → Backend (Node.js + Express)
+MongoDB         → Database (Mongoose ODM)
+
+2. Backend Flow
+The backend is responsible for:
+  Authenticating users via JWT tokens
+  Managing expense data via RESTful APIs
+  Validating input and protecting routes with middleware
+
+Key Backend Files:
+controllers/
+  authController.js: Handles user registration and login
+  expenseController.js: Handles CRUD operations for expenses
+models/
+  User.js: Schema for user accounts
+  Expense.js: Schema for individual expense entries
+routes/
+  authRoutes.js: Routes for login and register (/auth/*)
+  expenseRoutes.js: Routes for managing expenses (/expenses/*)
+middlewares/
+  authMiddleware.js: Protects private routes by verifying JWT
+  errorHandler.js: Handles API errors gracefully
+utils/validator.js: Validates input fields on registration
+
+The backend exposes the following main endpoints:
+  POST /auth/register
+  POST /auth/login
+  GET /expenses
+  POST /expenses
+  PUT /expenses/:id
+  DELETE /expenses/:id
+
+3. Frontend Flow
+The frontend is built using React with Vite for faster development and bundling. 
+It connects to the backend through Axios and manages JWT tokens for session handling.
+
+Key UI Pages:
+  Login.jsx & Register.jsx: Form-based pages to authenticate users
+  MainPage.jsx: Shows welcome message, dashboard button, and AddExpense form toggle
+  Dashboard.jsx: Visualizes data using Pie and Bar charts; supports filtering by category and date
+
+Reusable Components:
+  AddExpenseForm.jsx: Form to submit new expenses
+  ExpenseList.jsx: (if used) lists all expenses with edit/delete buttons
+  ExpenseChart.jsx: Displays Pie chart (category-wise) and Bar chart (monthly)
+
+Charts:
+  Uses chart.js with react-chartjs-2 for:
+    Pie Chart: Categorized expense breakdown
+    Bar Chart: Monthly expense summary
+
+4. Authentication Flow
+  User signs up or logs in from the frontend
+  Backend verifies credentials and returns a JWT
+  Token is stored in localStorage
+  All protected routes (like /expenses) require the token in headers
+  On logout, token is removed from storage
+
+5. Data Flow Summary
+[User Input] → [React Form] → [Axios POST] → [Express Route] → [MongoDB Action] → [Response] → [UI Update]
+Each user’s data is authenticated and scoped to their account via token-based authentication, ensuring personalized and secure tracking.
+
+Final Thoughts
+  This app provides a clean and intuitive way for users to monitor their expenses. 
+  With its modular backend, responsive frontend, and dynamic visualizations, it serves as a complete example of a full-stack application.
